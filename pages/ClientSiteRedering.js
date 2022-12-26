@@ -1,17 +1,22 @@
 import Head from "next/head";
 import { Inter } from "@next/font/google";
 import styles from "../styles/Home.module.css";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
-export async function getStaticProps() {
-  const res = await fetch(
-    "https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json"
-  );
+export default function Home() {
+  const [pokemon, setPokemon] = useState([]);
 
-  return { props: { pokemon: await res.json() } };
-}
-
-export default function Home({ pokemon }) {
+  useEffect(() => {
+    async function fetchPokemon() {
+      const resp = await fetch(
+        "https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json"
+      );
+      const pokemon = await resp.json();
+      setPokemon(pokemon);
+    }
+    fetchPokemon();
+  }, []);
   return (
     <>
       <div className={styles.container}>
